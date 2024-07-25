@@ -1,0 +1,36 @@
+<?php
+include 'db.php';
+
+
+$sql = "SELECT a.id, d.name AS doctor_name, p.name AS patient_name, a.appointment_date, a.status 
+        FROM appointments a 
+        JOIN doctors d ON a.doctor_id = d.id 
+        JOIN patients p ON a.patient_id = p.id";
+$result = $conn->query($sql);
+
+
+if ($result->num_rows > 0) {
+    echo "<table border='1'>
+            <tr>
+                <th>Doctor</th>
+                <th>Patient</th>
+                <th>Appointment Date</th>
+                <th>Status</th>
+            </tr>";
+    while($row = $result->fetch_assoc()) {
+        echo "<tr>
+                <td>{$row['doctor_name']}</td>
+                <td>{$row['patient_name']}</td>
+                <td>{$row['appointment_date']}</td>
+                <td>{$row['status']}</td>
+              </tr>";
+    }
+    echo "</table>";
+} else {
+    echo "0 results";
+}
+
+
+$conn->close();
+?>
+

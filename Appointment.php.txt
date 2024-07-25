@@ -1,0 +1,44 @@
+<?php
+include 'db.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+$doctor_id = $_POST['doctor_id'];
+$patient_id = $_POST['patient_id'];
+$appointment_date = $_POST['appointment_date'];
+
+$sql = "INSERT INTO appointments (doctor_id, patient_id, appointment_date) VALUES ('$doctor_id', '$patient_id', '$appointment_date')";
+
+if ($conn->query($sql) === TRUE) {
+echo "Appointment scheduled successfully";
+} else {
+echo "Error: " . $sql . "<br>" . $conn->error;
+}
+}
+
+// Fetch doctors
+$doctors = $conn->query("SELECT * FROM doctors");
+
+// Fetch patients
+$patients = $conn->query("SELECT * FROM patients");
+
+$conn->close();
+?>
+
+<form method="post" action="">
+Doctor:
+<select name="doctor_id" required>
+<?php while ($row = $doctors->fetch_assoc()): ?>
+<option value="<?php echo $row['id']; ?>"><?php echo $row['name']; ?></option>
+<?php endwhile; ?>
+</select><br>
+
+Patient:
+<select name="patient_id" required>
+<?php while ($row = $patients->fetch_assoc()): ?>
+<option value="<?php echo $row['id']; ?>"><?php echo $row['name']; ?></option>
+<?php endwhile; ?>
+</select><br>
+
+Appointment Date: <input type="datetime-local" name="appointment_date" required><br>
+<input type="submit" value="Schedule Appointment">
+</form>

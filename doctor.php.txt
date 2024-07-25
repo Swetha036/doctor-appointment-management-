@@ -1,0 +1,26 @@
+<?php
+include 'db.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+$name = $_POST['name'];
+$specialization = $_POST['specialization'];
+$email = $_POST['email'];
+
+$sql = "INSERT INTO doctors (name, specialization, email) VALUES ('$name', '$specialization', '$email')";
+
+if ($conn->query($sql) === TRUE) {
+echo "New doctor added successfully";
+} else {
+echo "Error: " . $sql . "<br>" . $conn->error;
+}
+}
+
+$conn->close();
+?>
+
+<form method="post" action="">
+Name: <input type="text" name="name" required><br>
+Specialization: <input type="text" name="specialization" required><br>
+Email: <input type="email" name="email" required><br>
+<input type="submit" value="Add Doctor">
+</form>
